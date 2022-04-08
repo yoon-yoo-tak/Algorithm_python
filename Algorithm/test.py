@@ -1,14 +1,21 @@
 import sys
+from itertools import permutations
 input = sys.stdin.readline
-t = int(input())
 
-dp = [0] * 1000001
+n, m = map(int, input().split())
+cream = [[False for _ in range(n)] for _ in range(n)]
+for i in range(m):
+    a, b = map(int, input().split())
+    cream[a - 1][b - 1] = True
+    cream[b - 1][a - 1] = True
 
-dp[1] = 1
-dp[2] = 2
-dp[3] = 4
-for i in range(4, 1000001):
-    dp[i] = (dp[i - 1] + dp[i - 2] + dp[i - 3]) % 1000000009
-for _ in range(t):
-    a = int(input())
-    print(dp[a])
+ans = 0
+
+for i in range(n):
+    for j in range(i + 1, n):
+        for k in range(j + 1, n):
+            if not cream[i][j] and not cream[i][k] and not cream[j][k]:
+                ans += 1
+
+print(ans)
+
