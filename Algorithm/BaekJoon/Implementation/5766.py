@@ -3,27 +3,33 @@
 """
 
 import sys
-
+from collections import defaultdict
 input = sys.stdin.readline
 
-while True:
-    n, m = map(int, input().split())
-    if n == 0 and m == 0:
-        break
-    ls = []
-    for i in range(n):
-        temp = list(map(int, input().split()))
-        for num in temp:
-            ls.append(num)
-    record = set()
-    for i in ls:
-        record.add((i, ls.count(i)))
-    record = sorted(record, key=lambda x: (-x[1], x[0]))
-    max_record = record[0][1]
-    for x, y in record:
-        if y != max_record:
-            sec = y
-            break
-    for x, y in record:
-        if y == sec:
-            print(x, end=' ')
+
+while 1:
+    N, M = map(int, input().split())
+    if not N and not M: break
+    rankers = defaultdict(int)
+    answer = []
+    max_cnt = 0
+    for _ in range(N):
+        a = list(map(int, input().split()))
+        for num in a:
+            rankers[num] += 1
+            if rankers[num] > max_cnt:
+                max_cnt = rankers[num]
+                answer = [num]
+            elif rankers[num] == max_cnt:
+                answer.append(num)
+    for first in answer:
+        del rankers[first]
+    answer = []
+    max_cnt = 0
+    for num in rankers:
+        if rankers[num] > max_cnt:
+            max_cnt = rankers[num]
+            answer = [num]
+        elif rankers[num] == max_cnt:
+            answer.append(num)
+    print(*sorted(answer))
