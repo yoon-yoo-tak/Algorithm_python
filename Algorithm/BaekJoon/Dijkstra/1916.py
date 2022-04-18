@@ -6,35 +6,29 @@
 import sys
 import heapq
 input = sys.stdin.readline
-
 n = int(input())
 m = int(input())
-con = [[] for _ in range(n + 1)]
+graph = [[] for _ in range(n + 1)]
+dist = [int(1e9)] * (n + 1)
+
 for _ in range(m):
     u, v, weight = map(int, input().split())
-    con[u].append((v, weight))
-start, destination = map(int, input().split())
+    graph[u].append((v, weight))
 
+start, end = map(int, input().split())
 
-dist = [1005 * 100000] * (n + 1)
 dist[start] = 0
-
-
-Q = []
-heapq.heappush(Q, (0, start))
-
-
-while Q:
-    dist_x, x = heapq.heappop(Q)
-
-
-    if dist[x] != dist_x: continue
-
-
-    for u, weight in con[x]:
-
+q = []
+heapq.heappush(q, (0, start))
+while q:
+    dist_x, x = heapq.heappop(q)
+    if dist[x] != dist_x:
+        continue
+    for u, weight in graph[x]:
         if dist[u] > dist[x] + weight:
             dist[u] = dist[x] + weight
-            heapq.heappush(Q, (dist[u], u))
+            heapq.heappush(q, (dist[u], u))
 
-print(dist[destination])
+print(dist[end])
+
+
