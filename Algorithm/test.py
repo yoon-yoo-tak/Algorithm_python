@@ -2,25 +2,23 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-n, k = map(int, input().split())
-dist = [-1] * 100001
+n, m = map(int, input().split())
+
+sel = [0 for _ in range(m)]
+used = [0 for _ in range(n + 1)]
+def dfs(k):
+    if k == m:
+        for i in sel:
+            print(i, end=' ')
+        print()
+    else:
+        start = 1 if k == 0 else sel[k - 1] + 1
+        for i in range(start, n + 1):
+            sel[k] = i
+            used[i] = 1
+            dfs(k + 1)
+            sel[k] = 0
+            used[i] = 0
 
 
-def bfs(n):
-    q = deque()
-    q.append(n)
-    dist[n] = 0
-    while q:
-        n = q.popleft()
-        for i in (n + 1, n - 1, n * 2):
-            if i < 0 or i > 100000:
-                continue
-            if dist[i] != -1:
-                continue
-            q.append(i)
-            dist[i] = dist[n] + 1
-bfs(n)
-print(dist[k])
-
-
-
+dfs(0)
