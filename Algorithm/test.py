@@ -2,23 +2,11 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
+direction = [[],
+             [[0], [1], [2], [3]],  # 1번 cctv
+             [[0, 1], [2, 3]],      # 2번 cctv
+             [[0, 2], [2, 1], [1, 3], [3, 0]],  # 3번 cctv
+             [[3, 0, 2], [1, 3, 0], [0, 2, 1], [2, 1, 3]], [[0, 1, 2, 3]]  # 4번 cctv
+             ]
 
-sel = [0 for _ in range(m)]
-used = [0 for _ in range(n + 1)]
-def dfs(k):
-    if k == m:
-        for i in sel:
-            print(i, end=' ')
-        print()
-    else:
-        start = 1 if k == 0 else sel[k - 1] + 1
-        for i in range(start, n + 1):
-            sel[k] = i
-            used[i] = 1
-            dfs(k + 1)
-            sel[k] = 0
-            used[i] = 0
-
-
-dfs(0)
+print(direction[1][0][0])
