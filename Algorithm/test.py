@@ -1,56 +1,30 @@
 import sys
-from collections import deque
 input = sys.stdin.readline
+INF = int(1e9)
+n = int(input())
+m = int(input())
 
-n, m = map(int, input().split())
-graph = [list(input().strip()) for _ in range(n)]
-visited = [[[[False] * m for _ in range(n)] for _ in range(m)] for _ in range(n)]
-dx = [1, 0, -1, 0]
-dy = [0, 1, 0, -1]
-q = deque()
+graph = [[INF] * (n + 1) for _ in range(n + 1)]
 
-def init():
-    rx, ry, bx, by = 0, 0, 0, 0
-    for i in range(n):
-        for j in range(m):
-            if graph[i][j] == 'R':
-                rx, ry = i, j
-            if graph[i][j] == 'B':
-                bx, by = i, j
-    q.append((rx, ry, bx, by, 1))
-    visited[rx][ry][bx][by] = True
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if a == b:
+            graph[a][b] = 0
 
-def move(x, y, dx, dy):
-    cnt = 0
-    while graph[x + dx][y + dy] != '#' and graph[x][y] != 'O':
-        x += dx
-        y += dy
-        cnt += 1
-    return x, y, cnt
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    if c < graph[a][b]:
+        graph[a][b] = c
 
-def bfs():
-    init()
-    while q:
-        rx, ry, bx, by, depth = q.popleft()
-        if depth > 10:
-            break
-        for i in range(4):
-            nrx, nry, rcnt = move(rx, ry, dx[i], dy[i])
-            nbx, nby, bcnt = move(bx, by, dx[i], dy[i])
-            if graph[nbx][nby] != 'O':
-                if graph[nrx][nry] == 'O':
-                    print(1)
-                    return
-                if nrx == nbx and  nry == nby:
-                    if rcnt > bcnt:
-                        nrx -= dx[i]
-                        nry -= dy[i]
-                    else:
-                        nbx -= dx[i]
-                        nby -= dy[i]
-                if not visited[nrx][nry][nbx][nby]:
-                    visited[nrx][nry][nbx][nby] = True
-                    q.append((nrx, nry, nbx, nby, depth + 1))
-    print(0)
+for k in range(1, n + 1):
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
 
-bfs()
+for a in range(1, n + 1):
+    for b in range(1, n + 1):
+        if graph[a][b] == INF:
+            print(0, end=' ')
+        else:
+            print(graph[a][b], end=' ')
+    print()
