@@ -1,30 +1,33 @@
-import sys
+"""
+10282 해킹
+"""
+import sys, heapq
+INF = int(1e10)
 input = sys.stdin.readline
-INF = int(1e9)
-n = int(input())
-m = int(input())
 
-graph = [[INF] * (n + 1) for _ in range(n + 1)]
+t = int(input())
+for tt in range(t):
+    n, d, start = map(int, input().split())
+    graph = [[] for _ in range(n + 1)]
+    dist = [INF] * (n + 1)
+    for _ in range(d):
+        b, a, c = map(int, input().split())
+        graph[a].append((b, c))
+    q = []
+    heapq.heappush(q, (0, start))
+    dist[start] = 0
+    while q:
+        dist_x, x = heapq.heappop(q)
+        if dist[x] != dist_x:
+            continue
+        for uu, weight in graph[x]:
+            if dist[uu] > dist[x] + weight:
+                dist[uu] = dist[x] + weight
+                heapq.heappush(q, (dist[uu], uu))
+    temp = [i for i in dist[1:] if i < INF]
+    cnt = len(temp)
+    time = max(temp)
+    print(cnt, time)
 
-for a in range(1, n + 1):
-    for b in range(1, n + 1):
-        if a == b:
-            graph[a][b] = 0
 
-for _ in range(m):
-    a, b, c = map(int, input().split())
-    if c < graph[a][b]:
-        graph[a][b] = c
 
-for k in range(1, n + 1):
-    for a in range(1, n + 1):
-        for b in range(1, n + 1):
-            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
-
-for a in range(1, n + 1):
-    for b in range(1, n + 1):
-        if graph[a][b] == INF:
-            print(0, end=' ')
-        else:
-            print(graph[a][b], end=' ')
-    print()
