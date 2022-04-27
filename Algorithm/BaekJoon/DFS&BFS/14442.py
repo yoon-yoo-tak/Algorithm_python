@@ -2,6 +2,8 @@
 14442 벽 부수고 이동하기 2
 """
 
+
+
 import sys
 from collections import deque
 input = sys.stdin.readline
