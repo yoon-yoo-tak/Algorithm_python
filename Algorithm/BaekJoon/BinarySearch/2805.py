@@ -25,7 +25,7 @@ def ok(H):
     return sum >= m
 
 l = 0
-r = 2000000000
+r = max(a)
 ans = 0
 
 while l <= r:
