@@ -2,10 +2,6 @@
 
 완전탐색
 """
-
-
-
-
 def solution(grid):
     answer = -1
     cnt = 0
