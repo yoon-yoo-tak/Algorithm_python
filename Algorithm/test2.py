@@ -1,45 +1,26 @@
-"""
-
-완전탐색
-"""
-def solution(grid):
-    answer = -1
-    cnt = 0
-    for i in grid:
-        cnt += i.count('?')
-
-    sel = ['' for _ in range(cnt)]
-    alpha = ['a', 'b', 'c']
-    temp = []
-
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == '?':
-                temp.append((i, j))
-    print('temp : ',  temp)
-    temp2 = []
-
-    def rec(k):
-        if k == cnt:
-            for x in sel:
-                temp2.append(''.join(sel))
+N = int(input())
+paper = [list(map(int, input().split())) for _ in range(N)]
+white, blue = 0, 0
+def divide(x, y, n):
+    global white, blue
+    color = paper[x][y]
+    check = True
+    for i in range(x, x+n):
+        if not check:
+            break
+        for j in range(y, y+n):
+            if color != paper[i][j]:
+                check = False
+                divide(x, y, n//2)
+                divide(x, y+n//2, n//2)
+                divide(x+n//2, y, n//2)
+                divide(x+n//2, y+n//2, n//2)
+                break
+    if check:
+        if color:
+            blue += 1 
         else:
-            for i in range(3):
-                sel[k] = alpha[i]
-                rec(k + 1)
-                sel[k] = 0
-
-    rec(0)
-    temp2 = sorted(set(temp2))
-    print(temp2)
-
-
-
-    print(grid)
-
-    return answer
-
-
-print(solution(["??b", "abc", "cc?"]))
-
-
+            white += 1 
+divide(0, 0, N)
+print(white)
+print(blue)

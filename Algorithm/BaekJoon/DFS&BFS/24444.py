@@ -16,17 +16,25 @@ for _ in range(m):
     graph[a].append(b)
     graph[b].append(a)
 
+for i in graph:
+    i.sort()
 
-def bfs(v):
+ls = [-1] * (n + 1)
+
+
+def bfs(v, cnt):
     q = deque()
-    q.append(v)
+    q.append((v, cnt))
     visit[v] = True
     while q:
-        n = q.popleft()
-        print(n)
-        for i in graph[n]:
+        x, cnt = q.popleft()
+        for i in graph[x]:
             if not visit[i]:
-                q.append(i)
+                q.append((i, cnt + 1))
+                ls[cnt] = x
                 visit[i] = True
 
-bfs(v)
+
+bfs(v, 1)
+for i in ls[1:]:
+    print(i if i != -1 else 0)

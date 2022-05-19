@@ -11,29 +11,24 @@ input = sys.stdin.readline
 
 n, m = map(int, input().split())
 
-a = [input().strip() for _ in range(n)]
-dist = [[0] * m for _ in range(n)]
-dxy = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+maze = list(input().strip() for _ in range(n))
+dist = [[-1] * m for _ in range(n)]
+dxy = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+q = deque()
+q.append((0, 0))
+dist[0][0] = 1
+while q:
+    x, y = q.popleft()
+    for dx, dy in dxy:
+        nx, ny = x + dx, y + dy
+        if nx < 0 or nx >= n or ny < 0 or ny >= m:
+            continue
+        if dist[nx][ny] != -1:
+            continue
+        if maze[nx][ny] != '1':
+            continue
+        q.append((nx, ny))
+        dist[nx][ny] = dist[x][y] + 1
 
-def bfs():
-    q = deque([0, 0])
-    dist[0][0] = 1
-    while q:
-        x = q.popleft()
-        y = q.popleft()
-        for dx, dy in dxy:
-            nx = x + dx
-            ny = y + dy
-            if nx < 0 or nx >= n or ny < 0 or ny >= m:
-                continue
-            if dist[nx][ny] != 0:
-                continue
-            if a[nx][ny] == '0':
-                continue
-            q.append(nx)
-            q.append(ny)
-            dist[nx][ny] = dist[x][y] + 1
 
-bfs()
 print(dist[n - 1][m - 1])
-

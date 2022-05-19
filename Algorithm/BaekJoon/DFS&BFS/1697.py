@@ -17,25 +17,18 @@ input = sys.stdin.readline
 
 n, k = map(int, input().split())
 
-max_val = 100000
+dist = [-1] * 100001
 
-dist = [-1] * (max_val + 1)
-
-def bfs(x):
-    q = deque([x])
-    dist[x] = 0
-
-    def move(y, d):
-        if y < 0 or y > max_val or dist[y] != -1:
-            return
-        dist[y] = d
-        q.append(y)
-
-    while q:
-        x = q.popleft()
-        move(x + 1, dist[x] + 1)
-        move(x - 1, dist[x] + 1)
-        move(x * 2, dist[x] + 1)
-
-bfs(n)
+q = deque()
+q.append(n)
+dist[n] = 0
+while q:
+    x = q.popleft()
+    for nx in (x + 1, x - 1, x * 2):
+        if nx < 0 or nx > 100000:
+            continue
+        if dist[nx] != -1:
+            continue
+        q.append(nx)
+        dist[nx] = dist[x] + 1
 print(dist[k])
