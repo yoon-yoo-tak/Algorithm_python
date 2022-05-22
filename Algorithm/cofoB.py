@@ -1,19 +1,21 @@
-import sys
+ls = dict()
+ls['A+'] = 4.5
+ls['A0'] = 4.0
+ls['B+'] = 3.5
+ls['B0'] = 3.0
+ls['C+'] = 2.5
+ls['C0'] = 2.0
+ls['D+'] = 1.5
+ls['D0'] = 1.0
+ls['F'] = 0.0
 
-input = sys.stdin.readline
+score_sum = 0
+total_sum = 0
+for _ in range(20):
+    a, score, grade = input().split()
+    if grade == 'P':
+        continue
+    score_sum += float(score)
+    total_sum += (float(score) * ls[grade])
 
-t = int(input())
-for _ in range(t):
-    n = int(input())
-    a = list(map(int, input().split()))
-    ans = 0
-    for i in range(n - 2, -1, -1):
-        while a[i] >= a[i + 1] and a[i] > 0:
-            a[i] //= 2
-            ans += 1
-        if a[i] >= a[i + 1]:
-            ans = -1
-            break
-    print(ans)
-
-
+print(f'{total_sum / score_sum:.6f}')
