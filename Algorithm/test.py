@@ -1,3 +1,13 @@
+def ccw_rotate(arr):
+    arr = [list(each) for each in reversed(tuple(zip(*arr)))]
+    return arr
+ls = [[1,1,2,2], [1,1,2,2],[3,3,4,4], [3,3,4,4]]
+for i in ls:
+    print(i)
+ls = ccw_rotate(ls)
+print()
+for i in ls:
+    print(i)
 a, b = list(input().split())
 c = []
 result = ""
