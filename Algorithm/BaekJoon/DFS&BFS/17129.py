@@ -1,9 +1,5 @@
 """
 17129 윌리암슨수액빨이딱따구리가 정보섬에 올라온 이유
-
-1. 아이디어
-2. 시간복잡도
-3. 자료구조
 """
 
 import sys
@@ -23,18 +19,18 @@ def bfs(x, y):
         x, y = q.popleft()
         for dx, dy in dxy:
             nx, ny = x + dx, y + dy
-            if nx < 0 or nx >= n or ny < 0 or ny >= m:
+            if nx < 0 or nx >= n or ny < 0 or ny >= m:  # 범위 체크
                 continue
-            if a[nx][ny] == '1':
+            if a[nx][ny] == '1':  # 벽 체크
                 continue
-            if dist[nx][ny] != -1:
+            if dist[nx][ny] != -1:  # 이미 방문한 곳인지
                 continue
             q.append((nx, ny))
             dist[nx][ny] = dist[x][y] + 1
-            if a[nx][ny] in ('3', '4', '5'):
+            if a[nx][ny] in ['3', '4', '5']:  # 다음 위치가 목표지점 중 하나라면
                 print('TAK')
                 print(dist[nx][ny])
-                exit()
+                return
     print('NIE')
 
 for i in range(n):

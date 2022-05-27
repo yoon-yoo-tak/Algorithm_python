@@ -1,40 +1,37 @@
-"""
-17836 공주님을 구해라!
-
-1. 아이디어
-2. 시간복잡도
-3. 자료구조
-"""
-
 import sys
+from collections import deque
 input = sys.stdin.readline
 
+
 def bfs():
-    global sword
-    q = []
-    visited[0][0] = 1
-    q.append((0,0))
-    while(len(q)>0):
-        x, y = q.pop(0)
-        if(arr[x][y] == 2):
-            sword = n-1-x + m-1-y + visited[x][y]-1
-        if(x == n-1 and y == m-1):
+    global gram
+    q = deque()
+    q.append((0, 0))
+    dist[0][0] = 0
+    while q:
+        x, y = q.popleft()
+        if castle[x][y] == 2:  # 현재 위치에 칼이 있으면
+            gram = N - 1 - x + M - 1 - y + dist[x][y]  # 공주까지의 최단거리로 갱신
+        if x == N - 1 and y == M - 1:  # 현재 위치가 공주 위치라면
+            return min(dist[x][y], gram)  # 칼이 있을 때의 최단거리와 없을 때의 최단거리와 비교하여 return
+        for dx, dy in dxy:
+            nx, ny = x + dx, y + dy
+            if nx < 0 or nx >= N or ny < 0 or ny >= M:  # 범위 체크
+                continue
+            if castle[nx][ny] == 1:  # 벽인지 체크
+                continue
+            if dist[nx][ny] != -1:  # 방문한 곳인지 체크
+                continue
+            q.append((nx, ny))
+            dist[nx][ny] = dist[x][y] + 1
+    return gram
 
-            return min(visited[x][y]-1, sword)
-        for k in range(4):
-            nx = x + dx[k]
-            ny = y + dy[k]
-            if(0<=nx<n and 0<=ny<m and arr[nx][ny] != 1):
-                if(visited[nx][ny] == 0):
-                    q.append((nx,ny))
-                    visited[nx][ny] = visited[x][y] + 1
-    return sword
+N, M, T = map(int, input().split())
+castle = [list(map(int, input().split())) for _ in range(N)]
+dist = [[-1] * M for _ in range(N)]
+dxy = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+gram = 9876543210
 
-dx = [0,1,0,-1]
-dy = [1,0,-1,0]
-n, m, limit = map(int, input().split())
-arr = [list(map(int, input().split())) for _ in range(n)]
-visited = [[0]*m for _ in range(n)]
-sword = 1000000
-res = bfs()
-print("Fail" if(res>limit) else res)
+ans = bfs()
+
+print('Fail' if ans > T else ans)
