@@ -6,25 +6,30 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-ls = [0] + list(int(input()) for _ in range(n))
-for _ in range(2):
-    s, e = map(int, input().split())
-    s -= 1
-    for i in range(s, e):
-        ls[i] = 0
-    last = 0
-    for i in range(1, len(ls)):
-        if ls[i] == 0:
-            continue
-        last += 1
-        ls[last] = ls[i]
-    for i in range(last + 1, len(ls)):
-        ls[i] = 0
-cnt = len([i for i in ls if i != 0])
-print(cnt)
-for i in ls:
-    if i != 0:
-        print(i)
+a = [int(input()) for _ in range(n)]
+total_block_cnt = n
+
+def cut_array(s, e):
+    global total_block_cnt
+    temp = []
+    for i in range(total_block_cnt):
+        if not (s <= i <= e):
+            temp.append(a[i])
+    total_block_cnt = len(temp)
+    for i in range(total_block_cnt):
+        a[i] = temp[i]
+
+def simulate():
+    start, end = map(int, input().split())
+    start -= 1
+    end -= 1
+    cut_array(start, end)
+simulate()
+simulate()
+print(total_block_cnt)
+for i in range(total_block_cnt):
+    print(a[i])
+
 
 
 

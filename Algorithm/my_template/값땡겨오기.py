@@ -15,3 +15,17 @@ for i in range(last + 1, len(a)):
 print(a)
 
 
+def pushing(ls):
+    last = len(ls)
+    for i in range(len(ls) - 1, -1, -1):
+        if ls[i] == 0:
+            continue
+        last -= 1
+        ls[last] = ls[i]
+    for i in range(last - 1, -1, -1):
+        ls[i] = 0
+    return ls
+
+ls = [1,2,3,0,0,0,4,0]
+ls = pushing(ls)
+print(ls)
