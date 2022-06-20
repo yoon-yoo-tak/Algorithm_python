@@ -30,7 +30,6 @@ def prime_until_num(num):  # 2부터 num 까지의 소수 출력
         if ls[i]:
             print(i, end=' ')
 
-print(is_prime(31))
-prime_until_num(11)
+print(is_prime(1319))
 
 

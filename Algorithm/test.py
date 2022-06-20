@@ -1,16 +1,55 @@
-num_selection, num_people = map(int, input().split())  # 변수 선언
-selected = [0 for _ in range(num_people)] # 뽑힌 사람의 번호를 저장할 배열을 뽑을 명수만큼 선언
+"""
+5 2
+5 3 6 1 3
+
+=> 2
+
+4 2
+8 8 4 3
+
+=> 0
+
+6 4
+3 5 1 3 9 8
+
+=> 1
+"""
+
+import sys
+input = sys.stdin.readline
+
+n, k = map(int, input().split())
+a = list(map(int, input().split()))
+rev_a = a[::-1]
+prefix_mx = [0] * n
+prefix_mn = [0] * n
+suffix_mx = [0] * n
+suffix_mn = [0] * n
+
+prefix_mx[0], prefix_mn[0] = a[0], a[0]
+suffix_mx[0], suffix_mn[0] = a[-1], a[-1]
+
+for i in range(1, n):
+    prefix_mx[i] = max(prefix_mx[i - 1], a[i])
+    prefix_mn[i] = min(prefix_mn[i - 1], a[i])
+
+for i in range(1, n):
+    suffix_mx[i] = max(suffix_mx[i - 1], rev_a[i])
+    suffix_mn[i] = min(suffix_mn[i - 1], rev_a[i])
+suffix_mn = suffix_mn[::-1]
+suffix_mx = suffix_mx[::-1]
+
+ans = int(1e9)
+
+for i in range(n - k + 1):
+    if i == 0:
+        ans = min(ans, suffix_mx[i + k] - suffix_mn[i + k])
+    elif i == n - k:
+        ans = min(ans, prefix_mx[k - 1] - prefix_mn[k - 1])
+    else:
+        val = max(prefix_mx[i - 1], suffix_mx[i + k]) - min(prefix_mn[i - 1], suffix_mn[i + k])
+        ans = min(ans, val)
+
+print(ans)
 
 
-def choose_num(curr_num: int):  # curr_num부터 마지막 사람까지 고르는 선택지를 구해줌
-    if curr_num == num_people: # 모든 사람이 각자 선택을 했으면
-        print(*selected)       # 출력
-        return
-
-    else:  # 아직 선택해야하는 사람이 남아있다면
-        for num in range(1, num_selection + 1): # 1 ~ num_selection 까지 반복하겠다.
-            selected[curr_num] = num  # selected배열의 curr_num 번지에 현재 뽑은 num을 넣겠다.
-            choose_num(curr_num + 1)  # 다음 번지를
-
-
-choose_num(0)

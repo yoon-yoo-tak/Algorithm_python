@@ -9,21 +9,17 @@ import sys
 input = sys.stdin.readline
 
 n, s = map(int, input().split())
-a = list(map(int, input().split()))
-
+ls = list(map(int, input().split()))
+total, r = 0, -1
 ans = n + 1
-sum = 0
-r = -1
-
 for l in range(n):
-    while r + 1 < n and sum < s:
+    while r + 1 < n and total < s:
         r += 1
-        sum += a[r]
+        total += ls[r]
 
-    if sum >= s:
+    if total >= s:
         ans = min(ans, r - l + 1)
-    sum -= a[l]
 
-if ans == n + 1:
-    ans = 0
-print(ans)
+    total -= ls[l]
+
+print(ans if ans != n + 1 else 0)
