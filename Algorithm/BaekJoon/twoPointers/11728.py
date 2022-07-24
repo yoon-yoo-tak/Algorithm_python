@@ -13,7 +13,7 @@ b = sorted(map(int, input().split()))
 
 L, R = 0, 0
 while L < n and R < m:
-    if a[L] <= b[R]:
+    if a[L] < b[R]:
         print(a[L], end=' ')
         L += 1
     else:

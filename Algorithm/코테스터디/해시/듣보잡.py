@@ -17,3 +17,4 @@ name_lst = [name for name in person if person[name] == 2]
 print(len(name_lst))
 for i in sorted(name_lst):
     print(i)
+
