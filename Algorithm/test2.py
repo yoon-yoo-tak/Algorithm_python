@@ -1,40 +1,32 @@
 import sys
+from collections import deque
 input = sys.stdin.readline
 
-n = int(input())
+def bfs():
+    q = deque()
+    q.append((a, b))
+    visited[a][b] = 0
+    while q:
+        x, y = q.popleft()
+        for dx, dy in dxy:
+            nx, ny = x + dx, y + dy
+            if nx < 0 or nx >= 5 or ny < 0 or ny >= 5:
+                continue
+            if board[nx][ny] == -1:
+                continue
+            if visited[nx][ny] != -1:
+                continue
+            q.append((nx, ny))
+            visited[nx][ny] = visited[x][y] + 1
 
-a, b, c, d = [], [], [], []
 
-for _ in range(n):
-    q, w, e, r = map(int, input().split())
-    a.append(q)
-    b.append(w)
-    c.append(e)
-    d.append(r)
-a.sort()
-b.sort()
-c.sort(reverse=True)
-d.sort(reverse=True)
-ab_sum = [i + j for i in b for j in a] + [2 ** 28 + 1]
-cd_sum = [i + j for i in d for j in c] + [2 ** 28 + 1]
-cd_sum.sort(reverse=True)
+dxy = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+board = [list(map(int, input().split())) for _ in range(5)]
+visited = [[-1] * 5 for _ in range(5)]
+a, b = map(int, input().split())
+bfs()
+x = [(i, j) for j in range(5) for i in range(5) if board[i][j] == 1]
+print(visited[x[0][0]][x[0][1]])
 
-l, r = 0, 0
-temp = n * n
-ans = 0
-while l < temp and r < temp:
-    temp_sum = ab_sum[l] + cd_sum[r]
-    if temp_sum == 0:
-        x, y = ab_sum[l], cd_sum[r]
-        p, q = l, r
-        while x == ab_sum[l]:
-            l += 1
-        while y == cd_sum[r]:
-            r += 1
-        ans += (l - p) * (r - q)
-    elif temp_sum < 0:
-        l += 1
-    else:
-        r += 1
-print(ans)
+
 

@@ -18,8 +18,6 @@ def union(a, b):
         parent[a] = b
 
 
-
-
 n, m = map(int, input().split())
 parent = [i for i in range(n + 1)]
 graph = []
