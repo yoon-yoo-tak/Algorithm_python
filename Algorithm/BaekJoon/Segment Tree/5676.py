@@ -4,6 +4,13 @@
 import sys
 input = sys.stdin.readline
 
+def change(x):
+    if x == 0:
+        return 0
+    elif x > 0:
+        return 1
+    else:
+        return -1
 
 def init(node, start, end):
     if start == end:
@@ -28,17 +35,17 @@ def update(node, start, end, index, diff):
         return
     if start == end:
         tree[node] = diff
+        return
     mid = (start + end) // 2
-    update(node * 2, start ,mid, index, diff)
+    update(node * 2, start, mid, index, diff)
     update(node * 2 + 1, mid + 1, end, index, diff)
     tree[node] = tree[node * 2] * tree[node * 2 + 1]
-
 
 
 while True:
     try:
         n, k = map(int, input().split())
-        ls = list(map(int, input().split()))
+        ls = [change(i) for i in list(map(int, input().split()))]
         tree = [0] * 300000
         ans = ''
         init(1, 0, n - 1)
@@ -47,6 +54,7 @@ while True:
             b, c = int(b), int(c)
             if a == 'C':
                 b -= 1
+                c = change(c)
                 ls[b] = c
                 update(1, 0, n - 1, b, c)
             else:
@@ -58,5 +66,5 @@ while True:
                 else:
                     ans += '-'
         print(ans)
-    except:
+    except Exception:
         break
